@@ -1,3 +1,5 @@
+@use '../../shared/styles/vars' as *;
+
 .container {
   border-radius: 8px;
   padding: 16px;
@@ -14,19 +16,19 @@
 }
 
 .cell:nth-child(3n) {
-  border-right: 3px solid #000;
+  border-right: 3px solid $color-black;
 }
 
 .cell:nth-child(1) {
-  border-left: 3px solid #000;
+  border-left: 3px solid $color-black;
 }
 
 table tr:nth-child(3n) .cell {
-  border-bottom: 3px solid #000;
+  border-bottom: 3px solid $color-black;
 }
 
 table tr:nth-child(1) .cell {
-  border-top: 3px solid #000;
+  border-top: 3px solid $color-black;
 }
 
 input {
@@ -38,11 +40,11 @@ input {
   border: none;
   outline: none;
   background: inherit;
-  color: black;
+  color: $color-black;
   cursor: default;
 
   &:focus {
-    background-color: #a6d1e7;
+    background-color: $color-blue;
     caret-color: transparent;
   }
 }
@@ -50,7 +52,7 @@ input {
 .same-row,
 .same-col,
 .same-box {
-  background-color: #a6d1e72e;
+  background-color: rgba($color: $color-blue, $alpha: 0.1);
 }
 
 .green {
