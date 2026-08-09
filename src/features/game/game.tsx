@@ -1,35 +1,69 @@
+import { useEffect, useState } from 'react';
 import cn from 'classnames';
+import { usePuzzleQuery } from './api';
+import type { SudokuFilledCell, SudokuPlayableBoard } from './api/types';
 import styles from './game.module.scss';
 
-interface GameProps {
-  greenCount: number;
-  board: number[][];
-  puzzle: number[][];
-  selected: [number, number] | null;
-  setSelected: (selected: [number, number] | null) => void;
-  onInput: (rowIdx: number, colIdx: number, value: string) => void;
-}
+type SelectedCell = [number, number];
 
-export const Game = ({
-  greenCount,
-  board,
-  puzzle,
-  selected,
-  setSelected,
-  onInput,
-}: GameProps) => {
+export const Game = () => {
+  const { boardData, isFetching } = usePuzzleQuery();
+
+  const [board, setBoard] = useState<SudokuPlayableBoard | null>(null);
+  const [puzzle, setPuzzle] = useState<SudokuPlayableBoard | null>(null);
+  const [selected, setSelected] = useState<SelectedCell | null>(null);
+  const [greenCount, setGreenCount] = useState(0);
+
+  useEffect(() => {
+    if (isFetching || !boardData) {
+      return;
+    }
+
+    setGreenCount(0);
+    setBoard(boardData.board);
+    setPuzzle(boardData.puzzle);
+  }, [boardData, isFetching]);
+
+  const onInput = (rowIdx: number, colIdx: number, value: string) => {
+    if (value !== '' && !/^[1-9]$/.test(value)) {
+      return;
+    }
+
+    const nextValue = value === '' ? null : (Number(value) as SudokuFilledCell);
+
+    setBoard((prev) => {
+      if (!prev) {
+        return prev;
+      }
+
+      return prev.map((row, r) =>
+        row.map((cell, c) => {
+          if (r === rowIdx && c === colIdx) {
+            return nextValue;
+          }
+
+          return cell;
+        }),
+      );
+    });
+  };
+
+  if (!board || !puzzle) {
+    return <div className={styles.container} />;
+  }
+
   return (
     <div className={styles.container}>
       <table className={styles.table}>
         <tbody>
-          {board?.map((row, rowIdx) => (
+          {board.map((row, rowIdx) => (
             <tr key={rowIdx}>
               {row.map((cell, colIdx) => {
                 const isPrefilled = puzzle[rowIdx][colIdx] !== null;
-                const isSameRow = selected && rowIdx === selected[0];
-                const isSameCol = selected && colIdx === selected[1];
+                const isSameRow = selected !== null && rowIdx === selected[0];
+                const isSameCol = selected !== null && colIdx === selected[1];
                 const isSameBox =
-                  selected &&
+                  selected !== null &&
                   Math.floor(rowIdx / 3) === Math.floor(selected[0] / 3) &&
                   Math.floor(colIdx / 3) === Math.floor(selected[1] / 3);
 
