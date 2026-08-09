@@ -1,0 +1,17 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  padding-top: 10vh;
+}
+
+.status {
+  font-weight: bold;
+  position: absolute;
+  top: 10px;
+  color: white;
+  background-color: black;
+  padding: 10px 25px;
+  border-radius: 10px;
+}

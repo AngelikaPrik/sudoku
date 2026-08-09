@@ -1,0 +1,1 @@
+export { usePuzzleQuery } from './usePuzzleQuery';
