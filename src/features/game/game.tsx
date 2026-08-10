@@ -20,14 +20,12 @@ export const Game = ({ boardData, isLoading }: GameProps) => {
 
   const [board, setBoard] = useState<SudokuBoard | null>(null);
   const [selected, setSelected] = useState<SelectedCell | null>(null);
-  const [greenCount, setGreenCount] = useState(0);
 
   useEffect(() => {
     if (!boardData) {
       return;
     }
 
-    setGreenCount(0);
     setSelected(null);
     setBoard(() => boardData.puzzle.map((row) => [...row]));
   }, [boardData]);
@@ -79,14 +77,10 @@ export const Game = ({ boardData, isLoading }: GameProps) => {
                   Math.floor(rowIdx / 3) === Math.floor(selected[0] / 3) &&
                   Math.floor(colIdx / 3) === Math.floor(selected[1] / 3);
 
-                const cellIndex = rowIdx * 9 + colIdx;
-                const isGreen = cellIndex < greenCount;
-
                 return (
                   <td
                     key={colIdx}
                     className={cn(styles.cell, {
-                      [styles.green]: isGreen,
                       [styles['same-row']]: isSameRow,
                       [styles['same-col']]: isSameCol,
                       [styles['same-box']]: isSameBox,
