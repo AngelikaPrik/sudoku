@@ -54,6 +54,9 @@ export const Game = ({ boardData, isLoading }: GameProps) => {
     });
   };
 
+  const selectedValue =
+    selected !== null ? (board?.[selected[0]]?.[selected[1]] ?? null) : null;
+
   if (isLoading || !board || !puzzle) {
     return (
       <div className={styles.loader}>
@@ -77,10 +80,6 @@ export const Game = ({ boardData, isLoading }: GameProps) => {
                   Math.floor(rowIdx / 3) === Math.floor(selected[0] / 3) &&
                   Math.floor(colIdx / 3) === Math.floor(selected[1] / 3);
 
-                const selectedValue =
-                  selected !== null
-                    ? (board?.[selected[0]]?.[selected[1]] ?? null)
-                    : null;
                 const isSameValue =
                   selectedValue !== null &&
                   selectedValue !== '0' &&
