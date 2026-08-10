@@ -11,24 +11,24 @@
 }
 
 .cell {
-  border: 1px solid #00000035;
+  border: 1px solid rgba($color: $color-black, $alpha: 0.3);
   padding: 0;
 }
 
 .cell:nth-child(3n) {
-  border-right: 3px solid $color-black;
+  border-right: 3px solid $color-dark-brown;
 }
 
 .cell:nth-child(1) {
-  border-left: 3px solid $color-black;
+  border-left: 3px solid $color-dark-brown;
 }
 
 table tr:nth-child(3n) .cell {
-  border-bottom: 3px solid $color-black;
+  border-bottom: 3px solid $color-dark-brown;
 }
 
 table tr:nth-child(1) .cell {
-  border-top: 3px solid $color-black;
+  border-top: 3px solid $color-dark-brown;
 }
 
 input {
