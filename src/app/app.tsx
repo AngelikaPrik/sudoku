@@ -2,11 +2,12 @@ import { useEffect, useState } from 'react';
 import { Game } from '@features/game';
 import { usePuzzleMutation } from '@features/game/api';
 import { Header } from '@features/header';
+import { SudokuDifficulty } from '@features/game/api/types';
 
-import styles from './App.module.scss';
+import styles from './app.module.scss';
 
 function App() {
-  const [difficulty, setDifficulty] = useState('easy');
+  const [difficulty, setDifficulty] = useState<SudokuDifficulty>('easy');
   const { data, mutate, isPending } = usePuzzleMutation();
 
   useEffect(() => {
@@ -27,7 +28,7 @@ function App() {
         }}
         onNewGame={() => mutate(difficulty)}
       />
-      <Game boardData={data} isLoading={isPending} />
+      <Game boardData={data || null} isLoading={isPending} />
     </div>
   );
 }
