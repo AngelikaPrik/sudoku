@@ -4,17 +4,10 @@ import type { PuzzleBoardData, SudokuDifficulty } from './types';
 const fetchPuzzle = async (
   difficulty: SudokuDifficulty,
 ): Promise<PuzzleBoardData> => {
-  const apiKey = import.meta.env.VITE_YDS_API_KEY;
-
-  if (!apiKey) {
-    throw new Error('Missing VITE_YDS_API_KEY');
-  }
-
   const response = await fetch('/api', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'x-api-key': apiKey,
     },
     body: JSON.stringify({
       difficulty,
