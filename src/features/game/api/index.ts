@@ -1,1 +1,1 @@
-export { usePuzzleQuery } from './usePuzzleQuery';
+export { usePuzzleMutation } from './use-puzzle-mutation';
