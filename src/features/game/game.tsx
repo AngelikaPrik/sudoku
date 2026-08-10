@@ -77,6 +77,15 @@ export const Game = ({ boardData, isLoading }: GameProps) => {
                   Math.floor(rowIdx / 3) === Math.floor(selected[0] / 3) &&
                   Math.floor(colIdx / 3) === Math.floor(selected[1] / 3);
 
+                const selectedValue =
+                  selected !== null
+                    ? (board?.[selected[0]]?.[selected[1]] ?? null)
+                    : null;
+                const isSameValue =
+                  selectedValue !== null &&
+                  selectedValue !== '0' &&
+                  cell === selectedValue;
+
                 return (
                   <td
                     key={colIdx}
@@ -84,6 +93,7 @@ export const Game = ({ boardData, isLoading }: GameProps) => {
                       [styles['same-row']]: isSameRow,
                       [styles['same-col']]: isSameCol,
                       [styles['same-box']]: isSameBox,
+                      [styles['same-value']]: isSameValue,
                     })}
                   >
                     <input
