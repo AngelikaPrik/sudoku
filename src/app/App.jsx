@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Game } from '@features/game';
 import { usePuzzleMutation } from '@features/game/api';
 import { Header } from '@features/header';
@@ -8,6 +8,10 @@ import styles from './App.module.scss';
 function App() {
   const [difficulty, setDifficulty] = useState('easy');
   const { data, mutate, isPending } = usePuzzleMutation();
+
+  useEffect(() => {
+    mutate(difficulty);
+  }, []);
 
   return (
     <div className={styles.app}>

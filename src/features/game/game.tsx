@@ -6,6 +6,7 @@ import type {
   SudokuFilledCell,
 } from './api/types';
 import styles from './game.module.scss';
+import { Loader } from '@shared/ui/loader';
 
 type SelectedCell = [number, number];
 
@@ -55,12 +56,12 @@ export const Game = ({ boardData, isLoading }: GameProps) => {
     });
   };
 
-  if (isLoading && !board) {
-    return <div className={styles.container} />;
-  }
-
-  if (!board || !puzzle) {
-    return <div className={styles.container} />;
+  if (isLoading || !board || !puzzle) {
+    return (
+      <div className={styles.loader}>
+        <Loader />
+      </div>
+    );
   }
 
   return (

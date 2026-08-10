@@ -3,7 +3,14 @@
 .container {
   border-radius: 8px;
   padding: 16px;
-  background-color: #fff;
+  background-color: $color-white;
+}
+
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
 }
 
 .table {
