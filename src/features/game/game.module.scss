@@ -8,19 +8,31 @@
   gap: 16px;
   width: 100%;
   max-width: 800px;
+
+  @include tablet {
+    flex-direction: column;
+    align-items: center;
+  }
 }
 
 .game {
   border-radius: 8px;
   padding: 16px;
   background-color: $color-white;
+  min-width: 554px;
+  min-height: 554px;
+
+  @include tablet {
+    min-width: auto;
+    min-height: auto;
+  }
 }
 
 .loader {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 300px;
+  height: 100%;
 }
 
 .table {
@@ -99,6 +111,11 @@ input {
   border-radius: 12px;
   padding: 8px;
   width: 220px;
+
+  @include tablet {
+    width: 100%;
+    max-width: 554px;
+  }
 }
 
 .numpad {
@@ -106,6 +123,10 @@ input {
   grid-template-columns: repeat(3, 1fr);
   gap: 8px;
   margin-bottom: 14px;
+
+  @include tablet {
+    display: flex;
+  }
 }
 
 .numpadBtn {
@@ -122,6 +143,10 @@ input {
     border-style: dashed;
     color: #b8af9d;
     cursor: not-allowed;
+  }
+
+  @include tablet {
+    width: 100%;
   }
 }
 

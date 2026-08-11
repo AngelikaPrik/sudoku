@@ -83,69 +83,69 @@ export const Game = ({ boardData, isLoading }: GameProps) => {
     updateCellValue(selected[0], selected[1], '0');
   };
 
-  if (isLoading || !board || !puzzle) {
-    return (
-      <div className={styles.loader}>
-        <Loader />
-      </div>
-    );
-  }
-
   return (
     <div className={styles.container}>
       <div className={styles.game}>
-        <table className={styles.table}>
-          <tbody>
-            {board.map((row, rowIdx) => (
-              <tr key={rowIdx}>
-                {row.map((cell, colIdx) => {
-                  const isPrefilled = puzzle[rowIdx][colIdx] !== '0';
-                  const isSelected =
-                    selected !== null &&
-                    rowIdx === selected[0] &&
-                    colIdx === selected[1];
-                  const isSameRow = selected !== null && rowIdx === selected[0];
-                  const isSameCol = selected !== null && colIdx === selected[1];
-                  const isSameBox =
-                    selected !== null &&
-                    Math.floor(rowIdx / 3) === Math.floor(selected[0] / 3) &&
-                    Math.floor(colIdx / 3) === Math.floor(selected[1] / 3);
+        {isLoading || !board || !puzzle ? (
+          <div className={styles.loader}>
+            <Loader />
+          </div>
+        ) : (
+          <table className={styles.table}>
+            <tbody>
+              {board.map((row, rowIdx) => (
+                <tr key={rowIdx}>
+                  {row.map((cell, colIdx) => {
+                    const isPrefilled = puzzle[rowIdx][colIdx] !== '0';
+                    const isSelected =
+                      selected !== null &&
+                      rowIdx === selected[0] &&
+                      colIdx === selected[1];
+                    const isSameRow =
+                      selected !== null && rowIdx === selected[0];
+                    const isSameCol =
+                      selected !== null && colIdx === selected[1];
+                    const isSameBox =
+                      selected !== null &&
+                      Math.floor(rowIdx / 3) === Math.floor(selected[0] / 3) &&
+                      Math.floor(colIdx / 3) === Math.floor(selected[1] / 3);
 
-                  const isSameValue =
-                    selectedValue !== null &&
-                    selectedValue !== '0' &&
-                    cell === selectedValue &&
-                    !isSelected;
+                    const isSameValue =
+                      selectedValue !== null &&
+                      selectedValue !== '0' &&
+                      cell === selectedValue &&
+                      !isSelected;
 
-                  return (
-                    <td
-                      key={colIdx}
-                      className={cn(styles.cell, {
-                        [styles.selected]: isSelected,
-                        [styles['same-row']]: isSameRow,
-                        [styles['same-col']]: isSameCol,
-                        [styles['same-box']]: isSameBox,
-                        [styles['same-value']]: isSameValue,
-                      })}
-                    >
-                      <input
-                        type='text'
-                        maxLength={1}
-                        value={cell === '0' ? '' : cell}
-                        readOnly={isPrefilled}
-                        onFocus={() => setSelected([rowIdx, colIdx])}
-                        onClick={() => setSelected([rowIdx, colIdx])}
-                        onChange={(e) =>
-                          onInput(rowIdx, colIdx, e.target.value)
-                        }
-                      />
-                    </td>
-                  );
-                })}
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                    return (
+                      <td
+                        key={colIdx}
+                        className={cn(styles.cell, {
+                          [styles.selected]: isSelected,
+                          [styles['same-row']]: isSameRow,
+                          [styles['same-col']]: isSameCol,
+                          [styles['same-box']]: isSameBox,
+                          [styles['same-value']]: isSameValue,
+                        })}
+                      >
+                        <input
+                          type='text'
+                          maxLength={1}
+                          value={cell === '0' ? '' : cell}
+                          readOnly={isPrefilled}
+                          onFocus={() => setSelected([rowIdx, colIdx])}
+                          onClick={() => setSelected([rowIdx, colIdx])}
+                          onChange={(e) =>
+                            onInput(rowIdx, colIdx, e.target.value)
+                          }
+                        />
+                      </td>
+                    );
+                  })}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
       <Controls
         isDisabled={selected === null || isSelectedPrefilled}
