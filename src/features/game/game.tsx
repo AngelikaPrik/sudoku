@@ -3,6 +3,7 @@ import cn from 'classnames';
 import type {
   PuzzleBoardData,
   SudokuBoard,
+  SudokuCell,
   SudokuFilledCell,
 } from './api/types';
 import styles from './game.module.scss';
@@ -31,6 +32,24 @@ export const Game = ({ boardData, isLoading }: GameProps) => {
     setBoard(() => boardData.puzzle.map((row) => [...row]));
   }, [boardData]);
 
+  const updateCellValue = (
+    rowIdx: number,
+    colIdx: number,
+    value: SudokuCell,
+  ) => {
+    setBoard((prev) => {
+      if (!prev) {
+        return prev;
+      }
+
+      const nextBoard = [...prev];
+      nextBoard[rowIdx] = [...nextBoard[rowIdx]];
+      nextBoard[rowIdx][colIdx] = value;
+
+      return nextBoard;
+    });
+  };
+
   const onInput = (rowIdx: number, colIdx: number, value: string) => {
     if (value !== '' && !/^[1-9]$/.test(value)) {
       return;
@@ -38,25 +57,31 @@ export const Game = ({ boardData, isLoading }: GameProps) => {
 
     const nextValue = value === '' ? '0' : (value as SudokuFilledCell);
 
-    setBoard((prev) => {
-      if (!prev) {
-        return prev;
-      }
-
-      return prev.map((row, r) =>
-        row.map((cell, c) => {
-          if (r === rowIdx && c === colIdx) {
-            return nextValue;
-          }
-
-          return cell;
-        }),
-      );
-    });
+    updateCellValue(rowIdx, colIdx, nextValue);
   };
 
   const selectedValue =
     selected !== null ? (board?.[selected[0]]?.[selected[1]] ?? null) : null;
+  const isSelectedPrefilled =
+    selected !== null && puzzle !== null
+      ? puzzle[selected[0]][selected[1]] !== '0'
+      : false;
+
+  const onControlSelectValue = (value: SudokuFilledCell) => {
+    if (!selected || isSelectedPrefilled) {
+      return;
+    }
+
+    updateCellValue(selected[0], selected[1], value);
+  };
+
+  const onErase = () => {
+    if (!selected || isSelectedPrefilled) {
+      return;
+    }
+
+    updateCellValue(selected[0], selected[1], '0');
+  };
 
   if (isLoading || !board || !puzzle) {
     return (
@@ -75,6 +100,10 @@ export const Game = ({ boardData, isLoading }: GameProps) => {
               <tr key={rowIdx}>
                 {row.map((cell, colIdx) => {
                   const isPrefilled = puzzle[rowIdx][colIdx] !== '0';
+                  const isSelected =
+                    selected !== null &&
+                    rowIdx === selected[0] &&
+                    colIdx === selected[1];
                   const isSameRow = selected !== null && rowIdx === selected[0];
                   const isSameCol = selected !== null && colIdx === selected[1];
                   const isSameBox =
@@ -85,12 +114,14 @@ export const Game = ({ boardData, isLoading }: GameProps) => {
                   const isSameValue =
                     selectedValue !== null &&
                     selectedValue !== '0' &&
-                    cell === selectedValue;
+                    cell === selectedValue &&
+                    !isSelected;
 
                   return (
                     <td
                       key={colIdx}
                       className={cn(styles.cell, {
+                        [styles.selected]: isSelected,
                         [styles['same-row']]: isSameRow,
                         [styles['same-col']]: isSameCol,
                         [styles['same-box']]: isSameBox,
@@ -116,7 +147,11 @@ export const Game = ({ boardData, isLoading }: GameProps) => {
           </tbody>
         </table>
       </div>
-      <Controls />
+      <Controls
+        isDisabled={selected === null || isSelectedPrefilled}
+        onSelectValue={onControlSelectValue}
+        onErase={onErase}
+      />
     </div>
   );
 };

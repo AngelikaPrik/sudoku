@@ -67,7 +67,6 @@ input {
   max-height: 56px;
 
   &:focus {
-    background-color: $color-blue;
     caret-color: transparent;
   }
 
@@ -88,6 +87,10 @@ input {
 
 .same-value {
   background-color: rgba($color: $color-dark-blue, $alpha: 0.2);
+}
+
+.selected {
+  background-color: $color-blue;
 }
 
 .controls {
@@ -111,7 +114,7 @@ input {
   border: 0.5px solid #d8d2c4;
   background: #faf7f0;
   color: #2e2a24;
-  font-size: 20px;
+  font-size: 24px;
   cursor: pointer;
 
   &:disabled {
