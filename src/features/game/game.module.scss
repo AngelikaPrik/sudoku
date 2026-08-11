@@ -21,6 +21,7 @@
   background-color: $color-white;
   min-width: 554px;
   min-height: 554px;
+  position: relative;
 
   @include tablet {
     min-width: auto;
@@ -33,6 +34,11 @@
   justify-content: center;
   align-items: center;
   height: 100%;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .table {
