@@ -2,6 +2,15 @@
 @use '../../shared/styles/breakpoints' as *;
 
 .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  width: 100%;
+  max-width: 800px;
+}
+
+.game {
   border-radius: 8px;
   padding: 16px;
   background-color: $color-white;
@@ -79,4 +88,69 @@ input {
 
 .same-value {
   background-color: rgba($color: $color-dark-blue, $alpha: 0.2);
+}
+
+.controls {
+  background: #ffffff;
+  border: 0.5px solid #d8d2c4;
+  border-radius: 12px;
+  padding: 8px;
+  width: 220px;
+}
+
+.numpad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.numpadBtn {
+  height: 64px;
+  border-radius: 8px;
+  border: 0.5px solid #d8d2c4;
+  background: #faf7f0;
+  color: #2e2a24;
+  font-size: 20px;
+  cursor: pointer;
+
+  &:disabled {
+    background: #f1eee6;
+    border-style: dashed;
+    color: #b8af9d;
+    cursor: not-allowed;
+  }
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.actionBtn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 40px;
+  border-radius: 8px;
+  background: #ffffff;
+  font-size: 13px;
+  cursor: pointer;
+
+  &:first-child {
+    border: 0.5px solid #b8af9d;
+    color: #2e2a24;
+  }
+
+  &:last-child {
+    border: 0.5px solid #3b6fa0;
+    color: #3b6fa0;
+  }
+
+  &:last-child.active {
+    background: #3b6fa0;
+    color: #ffffff;
+  }
 }

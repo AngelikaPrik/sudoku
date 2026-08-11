@@ -7,6 +7,7 @@ import type {
 } from './api/types';
 import styles from './game.module.scss';
 import { Loader } from '@shared/ui/loader';
+import { Controls } from './controls';
 
 type SelectedCell = [number, number];
 
@@ -67,50 +68,55 @@ export const Game = ({ boardData, isLoading }: GameProps) => {
 
   return (
     <div className={styles.container}>
-      <table className={styles.table}>
-        <tbody>
-          {board.map((row, rowIdx) => (
-            <tr key={rowIdx}>
-              {row.map((cell, colIdx) => {
-                const isPrefilled = puzzle[rowIdx][colIdx] !== '0';
-                const isSameRow = selected !== null && rowIdx === selected[0];
-                const isSameCol = selected !== null && colIdx === selected[1];
-                const isSameBox =
-                  selected !== null &&
-                  Math.floor(rowIdx / 3) === Math.floor(selected[0] / 3) &&
-                  Math.floor(colIdx / 3) === Math.floor(selected[1] / 3);
+      <div className={styles.game}>
+        <table className={styles.table}>
+          <tbody>
+            {board.map((row, rowIdx) => (
+              <tr key={rowIdx}>
+                {row.map((cell, colIdx) => {
+                  const isPrefilled = puzzle[rowIdx][colIdx] !== '0';
+                  const isSameRow = selected !== null && rowIdx === selected[0];
+                  const isSameCol = selected !== null && colIdx === selected[1];
+                  const isSameBox =
+                    selected !== null &&
+                    Math.floor(rowIdx / 3) === Math.floor(selected[0] / 3) &&
+                    Math.floor(colIdx / 3) === Math.floor(selected[1] / 3);
 
-                const isSameValue =
-                  selectedValue !== null &&
-                  selectedValue !== '0' &&
-                  cell === selectedValue;
+                  const isSameValue =
+                    selectedValue !== null &&
+                    selectedValue !== '0' &&
+                    cell === selectedValue;
 
-                return (
-                  <td
-                    key={colIdx}
-                    className={cn(styles.cell, {
-                      [styles['same-row']]: isSameRow,
-                      [styles['same-col']]: isSameCol,
-                      [styles['same-box']]: isSameBox,
-                      [styles['same-value']]: isSameValue,
-                    })}
-                  >
-                    <input
-                      type='text'
-                      maxLength={1}
-                      value={cell === '0' ? '' : cell}
-                      readOnly={isPrefilled}
-                      onFocus={() => setSelected([rowIdx, colIdx])}
-                      onClick={() => setSelected([rowIdx, colIdx])}
-                      onChange={(e) => onInput(rowIdx, colIdx, e.target.value)}
-                    />
-                  </td>
-                );
-              })}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+                  return (
+                    <td
+                      key={colIdx}
+                      className={cn(styles.cell, {
+                        [styles['same-row']]: isSameRow,
+                        [styles['same-col']]: isSameCol,
+                        [styles['same-box']]: isSameBox,
+                        [styles['same-value']]: isSameValue,
+                      })}
+                    >
+                      <input
+                        type='text'
+                        maxLength={1}
+                        value={cell === '0' ? '' : cell}
+                        readOnly={isPrefilled}
+                        onFocus={() => setSelected([rowIdx, colIdx])}
+                        onClick={() => setSelected([rowIdx, colIdx])}
+                        onChange={(e) =>
+                          onInput(rowIdx, colIdx, e.target.value)
+                        }
+                      />
+                    </td>
+                  );
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <Controls />
     </div>
   );
 };
