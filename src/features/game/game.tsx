@@ -22,27 +22,31 @@ export const Game = ({ boardData, isLoading }: GameProps) => {
     changeSelectedCellValue,
     eraseSelectedCell,
   } = useSudokuBoard(boardData);
+  const solution = boardData?.solution ?? null;
+  const hasBoard = board !== null && puzzle !== null && solution !== null;
 
   return (
     <div className={styles.container}>
       <div className={styles.game}>
-        {isLoading || !board || !puzzle ? (
-          <div className={styles.loader}>
-            <Loader />
-          </div>
-        ) : (
+        {hasBoard ? (
           <Board
             board={board}
             puzzle={puzzle}
+            solution={solution}
             selected={selected}
             selectedValue={selectedValue}
             onSelectCell={selectCell}
             onInputCell={handleCellInput}
           />
+        ) : null}
+        {(!hasBoard || isLoading) && (
+          <div className={styles.loader} aria-live='polite' aria-busy='true'>
+            <Loader />
+          </div>
         )}
       </div>
       <Controls
-        isDisabled={areControlsDisabled}
+        isDisabled={isLoading || areControlsDisabled}
         onSelectValue={changeSelectedCellValue}
         onErase={eraseSelectedCell}
       />

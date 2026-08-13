@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import type { PuzzleBoardData, SudokuBoard, SudokuCell } from './api/types';
 import { isPrefilledCell, normalizeCellInput } from './board-utils';
 import type { SelectedCell } from './board-utils';
@@ -22,7 +22,7 @@ export const useSudokuBoard = (
   const [board, setBoard] = useState<SudokuBoard | null>(null);
   const [selected, setSelected] = useState<SelectedCell | null>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!boardData) {
       return;
     }

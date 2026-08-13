@@ -7,6 +7,7 @@ import styles from './game.module.scss';
 interface BoardProps {
   board: SudokuBoard;
   puzzle: SudokuBoard;
+  solution: SudokuBoard;
   selected: SelectedCell | null;
   selectedValue: SudokuCell | null;
   onSelectCell: (cell: SelectedCell) => void;
@@ -16,6 +17,7 @@ interface BoardProps {
 export const Board = ({
   board,
   puzzle,
+  solution,
   selected,
   selectedValue,
   onSelectCell,
@@ -29,6 +31,7 @@ export const Board = ({
             const cellPosition: SelectedCell = [rowIdx, colIdx];
             const cellState = getCellState({
               puzzle,
+              solution,
               selected,
               selectedValue,
               cellPosition,
@@ -40,6 +43,7 @@ export const Board = ({
                 key={colIdx}
                 className={cn(styles.cell, {
                   [styles.selected]: cellState.isSelected,
+                  [styles.invalid]: cellState.isInvalid,
                   [styles['same-row']]: cellState.isSameRow,
                   [styles['same-col']]: cellState.isSameCol,
                   [styles['same-box']]: cellState.isSameBox,

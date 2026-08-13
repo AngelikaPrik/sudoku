@@ -4,6 +4,7 @@ export type SelectedCell = [row: number, col: number];
 
 interface CellStateArgs {
   puzzle: SudokuBoard;
+  solution: SudokuBoard;
   selected: SelectedCell | null;
   selectedValue: SudokuCell | null;
   cellPosition: SelectedCell;
@@ -12,6 +13,7 @@ interface CellStateArgs {
 
 export interface CellState {
   isPrefilled: boolean;
+  isInvalid: boolean;
   isSameRow: boolean;
   isSameCol: boolean;
   isSameBox: boolean;
@@ -45,16 +47,23 @@ const isSameBox = (
 
 export const getCellState = ({
   puzzle,
+  solution,
   selected,
   selectedValue,
   cellPosition,
   cellValue,
 }: CellStateArgs): CellState => {
   const isPrefilled = isPrefilledCell(puzzle, cellPosition);
+  const [row, col] = cellPosition;
+  const isInvalid =
+    !isPrefilled &&
+    cellValue !== EMPTY_CELL &&
+    solution[row]?.[col] !== cellValue;
 
   if (!selected) {
     return {
       isPrefilled,
+      isInvalid,
       isSameRow: false,
       isSameCol: false,
       isSameBox: false,
@@ -64,13 +73,13 @@ export const getCellState = ({
   }
 
   const [selectedRow, selectedCol] = selected;
-  const [row, col] = cellPosition;
   const isSameRow = row === selectedRow;
   const isSameCol = col === selectedCol;
   const isSelected = isSameRow && isSameCol;
 
   return {
     isPrefilled,
+    isInvalid,
     isSameRow,
     isSameCol,
     isSameBox: isSameBox(cellPosition, selected),
