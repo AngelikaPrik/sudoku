@@ -10,7 +10,7 @@ import styles from './game.module.scss';
 import { Loader } from '@shared/ui/loader';
 import { Controls } from './controls';
 
-type SelectedCell = [number, number];
+type SelectedCell = [row: number, col: number];
 
 interface GameProps {
   boardData: PuzzleBoardData | null;
@@ -18,29 +18,26 @@ interface GameProps {
 }
 
 export const Game = ({ boardData, isLoading }: GameProps) => {
-  const puzzle = boardData?.puzzle ?? null;
-
   const [board, setBoard] = useState<SudokuBoard | null>(null);
   const [selected, setSelected] = useState<SelectedCell | null>(null);
 
   useEffect(() => {
-    if (!boardData) {
-      return;
+    if (boardData) {
+      setSelected(null);
+      setBoard(() => boardData.puzzle.map((row) => [...row]));
     }
-
-    setSelected(null);
-    setBoard(() => boardData.puzzle.map((row) => [...row]));
   }, [boardData]);
 
-  const updateCellValue = (
-    rowIdx: number,
-    colIdx: number,
-    value: SudokuCell,
-  ) => {
+  const puzzle = boardData?.puzzle ?? null;
+  const hasSelection = selected !== null;
+  const [row, col] = selected ?? [0, 0];
+
+  const selectedValue = hasSelection ? (board?.[row]?.[col] ?? null) : null;
+  const isPrefilled = hasSelection && (puzzle?.[row]?.[col] ?? '0') !== '0';
+
+  const updateCell = ([rowIdx, colIdx]: SelectedCell, value: SudokuCell) => {
     setBoard((prev) => {
-      if (!prev) {
-        return prev;
-      }
+      if (!prev) return prev;
 
       const nextBoard = [...prev];
       nextBoard[rowIdx] = [...nextBoard[rowIdx]];
@@ -57,30 +54,15 @@ export const Game = ({ boardData, isLoading }: GameProps) => {
 
     const nextValue = value === '' ? '0' : (value as SudokuFilledCell);
 
-    updateCellValue(rowIdx, colIdx, nextValue);
+    updateCell([rowIdx, colIdx], nextValue);
   };
 
-  const selectedValue =
-    selected !== null ? (board?.[selected[0]]?.[selected[1]] ?? null) : null;
-  const isSelectedPrefilled =
-    selected !== null && puzzle !== null
-      ? puzzle[selected[0]][selected[1]] !== '0'
-      : false;
-
-  const onControlSelectValue = (value: SudokuFilledCell) => {
-    if (!selected || isSelectedPrefilled) {
+  const onChangeCellValue = (value: SudokuCell) => {
+    if (!selected || isPrefilled) {
       return;
     }
 
-    updateCellValue(selected[0], selected[1], value);
-  };
-
-  const onErase = () => {
-    if (!selected || isSelectedPrefilled) {
-      return;
-    }
-
-    updateCellValue(selected[0], selected[1], '0');
+    updateCell(selected, value);
   };
 
   return (
@@ -97,16 +79,11 @@ export const Game = ({ boardData, isLoading }: GameProps) => {
                 <tr key={rowIdx}>
                   {row.map((cell, colIdx) => {
                     const isPrefilled = puzzle[rowIdx][colIdx] !== '0';
-                    const isSelected =
-                      selected !== null &&
-                      rowIdx === selected[0] &&
-                      colIdx === selected[1];
-                    const isSameRow =
-                      selected !== null && rowIdx === selected[0];
-                    const isSameCol =
-                      selected !== null && colIdx === selected[1];
+                    const isSameRow = hasSelection && rowIdx === selected[0];
+                    const isSameCol = hasSelection && colIdx === selected[1];
+                    const isSelected = isSameRow && isSameCol;
                     const isSameBox =
-                      selected !== null &&
+                      hasSelection &&
                       Math.floor(rowIdx / 3) === Math.floor(selected[0] / 3) &&
                       Math.floor(colIdx / 3) === Math.floor(selected[1] / 3);
 
@@ -148,9 +125,9 @@ export const Game = ({ boardData, isLoading }: GameProps) => {
         )}
       </div>
       <Controls
-        isDisabled={selected === null || isSelectedPrefilled}
-        onSelectValue={onControlSelectValue}
-        onErase={onErase}
+        isDisabled={selected === null || isPrefilled}
+        onSelectValue={onChangeCellValue}
+        onErase={() => onChangeCellValue('0')}
       />
     </div>
   );
