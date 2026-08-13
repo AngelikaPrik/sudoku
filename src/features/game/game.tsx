@@ -48,11 +48,13 @@ export const Game = ({ boardData, isLoading }: GameProps) => {
   };
 
   const onInput = (rowIdx: number, colIdx: number, value: string) => {
-    if (value !== '' && !/^[1-9]$/.test(value)) {
+    const digit = value.replace(/[^1-9]/g, '').slice(-1);
+
+    if (value !== '' && digit === '') {
       return;
     }
 
-    const nextValue = value === '' ? '0' : (value as SudokuFilledCell);
+    const nextValue = digit === '' ? '0' : (digit as SudokuFilledCell);
 
     updateCell([rowIdx, colIdx], nextValue);
   };
@@ -106,7 +108,8 @@ export const Game = ({ boardData, isLoading }: GameProps) => {
                       >
                         <input
                           type='text'
-                          maxLength={1}
+                          inputMode='numeric'
+                          pattern='[1-9]*'
                           value={cell === '0' ? '' : cell}
                           readOnly={isPrefilled}
                           onFocus={() => setSelected([rowIdx, colIdx])}
