@@ -1,6 +1,6 @@
 import cn from 'classnames';
 import logo from '../../../public/favicon.svg';
-import type { SudokuDifficulty } from '@features/game/api/types';
+import type { SudokuDifficulty } from 'src/features/game/model/api/types';
 import styles from './header.module.scss';
 
 const difficultyButtons: SudokuDifficulty[] = ['easy', 'medium', 'hard'];

@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Game } from '@features/game';
-import { usePuzzleMutation } from '@features/game/api';
+import { usePuzzleMutation } from '@features/game/model/api';
 import { Header } from '@features/header';
-import { SudokuDifficulty } from '@features/game/api/types';
+import { SudokuDifficulty } from '@features/game/model/api/types';
 
 import styles from './app.module.scss';
 

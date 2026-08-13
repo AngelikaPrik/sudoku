@@ -1,4 +1,4 @@
-import { SudokuFilledCell } from './api/types';
+import { SudokuFilledCell } from './model/api/types';
 import styles from './game.module.scss';
 
 interface ControlsProps {
