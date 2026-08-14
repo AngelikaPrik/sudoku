@@ -1,6 +1,19 @@
 import type { SudokuBoard, SudokuCell, SudokuFilledCell } from './api/types';
 
 export type SelectedCell = [row: number, col: number];
+export interface FilledDigit {
+  value: SudokuFilledCell;
+  isDisabled: boolean;
+}
+
+const DIGIT_VALUES = Array.from(
+  { length: 9 },
+  (_, index) => String(index + 1) as SudokuFilledCell,
+);
+
+export const FILLED_DIGITS: ReadonlyArray<FilledDigit> = DIGIT_VALUES.map(
+  value => ({ value, isDisabled: false }),
+);
 
 interface CellStateArgs {
   puzzle: SudokuBoard;
@@ -22,6 +35,25 @@ export interface CellState {
 }
 
 const EMPTY_CELL: SudokuCell = '0';
+const MAX_DIGIT_USAGE = 9;
+
+const getUsedValueCounts = (
+  board: SudokuBoard | null,
+): Record<SudokuFilledCell, number> => {
+  const usedValueCounts = Object.fromEntries(
+    DIGIT_VALUES.map(value => [value, 0]),
+  ) as Record<SudokuFilledCell, number>;
+
+  board?.forEach(row => {
+    row.forEach(cell => {
+      if (cell !== EMPTY_CELL) {
+        usedValueCounts[cell] += 1;
+      }
+    });
+  });
+
+  return usedValueCounts;
+};
 
 export const isPrefilledCell = (
   puzzle: SudokuBoard,
@@ -36,6 +68,34 @@ export const normalizeCellInput = (value: string): SudokuCell | null => {
   }
 
   return digit === '' ? EMPTY_CELL : (digit as SudokuFilledCell);
+};
+
+export const getFilledDigits = (
+  board: SudokuBoard | null,
+  isDisabled = false,
+): ReadonlyArray<FilledDigit> => {
+  const usedValueCounts = getUsedValueCounts(board);
+
+  return FILLED_DIGITS.map(digit => ({
+    ...digit,
+    isDisabled: isDisabled || usedValueCounts[digit.value] >= MAX_DIGIT_USAGE,
+  }));
+};
+
+export const canUseCellValue = (
+  board: SudokuBoard | null,
+  [row, col]: SelectedCell,
+  value: SudokuCell,
+): boolean => {
+  if (value === EMPTY_CELL) {
+    return true;
+  }
+
+  const currentValue = board?.[row]?.[col] ?? null;
+  const usedValueCounts = getUsedValueCounts(board);
+  const usedCount = usedValueCounts[value] - (currentValue === value ? 1 : 0);
+
+  return usedCount < MAX_DIGIT_USAGE;
 };
 
 const isSameBox = (

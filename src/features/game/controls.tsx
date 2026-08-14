@@ -1,32 +1,33 @@
-import { SudokuFilledCell } from './model/api/types';
+import type { SudokuFilledCell } from './model/api/types';
+import type { FilledDigit } from './model/board-utils';
 import styles from './game.module.scss';
 
 interface ControlsProps {
-  isDisabled: boolean;
+  areActionsDisabled: boolean;
+  filledDigits: ReadonlyArray<FilledDigit>;
   onSelectValue: (value: SudokuFilledCell) => void;
   onErase: () => void;
 }
 
-const nums: SudokuFilledCell[] = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
-
 export const Controls = ({
-  isDisabled,
+  areActionsDisabled,
+  filledDigits,
   onSelectValue,
   onErase,
 }: ControlsProps) => (
   <div className={styles.controls}>
     <div className={styles.numpad}>
-      {nums.map(num => (
+      {filledDigits.map(({ value, isDisabled }) => (
         <button
-          key={num}
+          key={value}
           type='button'
           className={styles.numpadBtn}
-          data-value={num}
+          data-value={value}
           disabled={isDisabled}
-          onMouseDown={event => event.preventDefault()}
-          onClick={() => onSelectValue(num)}
+          onMouseDown={e => e.preventDefault()}
+          onClick={() => onSelectValue(value)}
         >
-          {num}
+          {value}
         </button>
       ))}
     </div>
@@ -35,8 +36,8 @@ export const Controls = ({
       <button
         type='button'
         className={styles.actionBtn}
-        disabled={isDisabled}
-        onMouseDown={event => event.preventDefault()}
+        disabled={areActionsDisabled}
+        onMouseDown={e => e.preventDefault()}
         onClick={onErase}
       >
         Erase

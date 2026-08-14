@@ -16,12 +16,13 @@ export const Game = ({ boardData, isLoading }: GameProps) => {
     puzzle,
     selected,
     selectedValue,
+    filledDigits,
     areControlsDisabled,
     selectCell,
     handleCellInput,
     changeSelectedCellValue,
     eraseSelectedCell,
-  } = useSudokuBoard(boardData);
+  } = useSudokuBoard(boardData, isLoading);
   const solution = boardData?.solution ?? null;
   const hasBoard = board !== null && puzzle !== null && solution !== null;
 
@@ -46,7 +47,8 @@ export const Game = ({ boardData, isLoading }: GameProps) => {
         )}
       </div>
       <Controls
-        isDisabled={isLoading || areControlsDisabled}
+        areActionsDisabled={areControlsDisabled}
+        filledDigits={filledDigits}
         onSelectValue={changeSelectedCellValue}
         onErase={eraseSelectedCell}
       />
