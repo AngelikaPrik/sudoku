@@ -27,7 +27,7 @@ export const Header = ({
 
       <div className={styles.controls}>
         <div className={styles.difficultyGroup}>
-          {difficultyButtons.map((button) => (
+          {difficultyButtons.map(button => (
             <button
               key={button}
               type='button'

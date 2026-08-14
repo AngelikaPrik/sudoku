@@ -28,7 +28,7 @@ export const useSudokuBoard = (
     }
 
     setSelected(null);
-    setBoard(boardData.puzzle.map((row) => [...row]));
+    setBoard(boardData.puzzle.map(row => [...row]));
   }, [boardData]);
 
   const puzzle = boardData?.puzzle ?? null;
@@ -39,7 +39,7 @@ export const useSudokuBoard = (
   const areControlsDisabled = selected === null || isSelectedPrefilled;
 
   const updateCell = ([rowIdx, colIdx]: SelectedCell, value: SudokuCell) => {
-    setBoard((prev) => {
+    setBoard(prev => {
       if (!prev) {
         return prev;
       }

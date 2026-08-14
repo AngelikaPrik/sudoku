@@ -16,14 +16,14 @@ export const Controls = ({
 }: ControlsProps) => (
   <div className={styles.controls}>
     <div className={styles.numpad}>
-      {nums.map((num) => (
+      {nums.map(num => (
         <button
           key={num}
           type='button'
           className={styles.numpadBtn}
           data-value={num}
           disabled={isDisabled}
-          onMouseDown={(event) => event.preventDefault()}
+          onMouseDown={event => event.preventDefault()}
           onClick={() => onSelectValue(num)}
         >
           {num}
@@ -36,7 +36,7 @@ export const Controls = ({
         type='button'
         className={styles.actionBtn}
         disabled={isDisabled}
-        onMouseDown={(event) => event.preventDefault()}
+        onMouseDown={event => event.preventDefault()}
         onClick={onErase}
       >
         Erase

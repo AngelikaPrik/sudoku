@@ -58,7 +58,7 @@ export const Board = ({
                   readOnly={cellState.isPrefilled}
                   onFocus={() => onSelectCell(cellPosition)}
                   onClick={() => onSelectCell(cellPosition)}
-                  onChange={(event) =>
+                  onChange={event =>
                     onInputCell(rowIdx, colIdx, event.target.value)
                   }
                 />

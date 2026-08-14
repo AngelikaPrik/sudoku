@@ -19,7 +19,7 @@ function App() {
       <Header
         difficulty={difficulty}
         isLoading={isPending}
-        setDifficulty={(newDifficulty) => {
+        setDifficulty={newDifficulty => {
           if (newDifficulty === difficulty) {
             return;
           }
