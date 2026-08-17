@@ -8,9 +8,10 @@ import { useSudokuBoard } from './model/use-sudoku-board';
 interface GameProps {
   boardData: PuzzleBoardData | null;
   isLoading: boolean;
+  timer: React.ReactNode;
 }
 
-export const Game = ({ boardData, isLoading }: GameProps) => {
+export const Game = ({ boardData, isLoading, timer }: GameProps) => {
   const {
     board,
     puzzle,
@@ -29,7 +30,7 @@ export const Game = ({ boardData, isLoading }: GameProps) => {
   return (
     <div className={styles.container}>
       <div className={styles.game}>
-        {hasBoard ? (
+        {hasBoard && (
           <Board
             board={board}
             puzzle={puzzle}
@@ -39,19 +40,22 @@ export const Game = ({ boardData, isLoading }: GameProps) => {
             onSelectCell={selectCell}
             onInputCell={handleCellInput}
           />
-        ) : null}
+        )}
         {(!hasBoard || isLoading) && (
           <div className={styles.loader} aria-live='polite' aria-busy='true'>
             <Loader />
           </div>
         )}
       </div>
-      <Controls
-        areActionsDisabled={areControlsDisabled}
-        filledDigits={filledDigits}
-        onSelectValue={changeSelectedCellValue}
-        onErase={eraseSelectedCell}
-      />
+      <div className={styles.aside}>
+        {timer}
+        <Controls
+          areActionsDisabled={areControlsDisabled}
+          filledDigits={filledDigits}
+          onSelectValue={changeSelectedCellValue}
+          onErase={eraseSelectedCell}
+        />
+      </div>
     </div>
   );
 };

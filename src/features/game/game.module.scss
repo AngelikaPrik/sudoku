@@ -2,9 +2,8 @@
 @use '../../shared/styles/breakpoints' as *;
 
 .container {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
+  display: grid;
+  grid-template-columns: auto 1fr;
   gap: 16px;
   width: 100%;
   max-width: 800px;
@@ -116,6 +115,12 @@ input {
 
 .selected {
   background-color: $color-blue;
+}
+
+.aside {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .controls {

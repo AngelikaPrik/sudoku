@@ -29,8 +29,7 @@ function App() {
         }}
         onNewGame={() => mutate(difficulty)}
       />
-      <Timer />
-      <Game boardData={data || null} isLoading={isPending} />
+      <Game boardData={data || null} isLoading={isPending} timer={<Timer />} />
     </div>
   );
 }
