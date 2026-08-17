@@ -1,8 +1,14 @@
 import styles from './timer.module.scss';
 
-export const Timer = () => {
+export type TimerAction = 'stop' | 'play';
+
+interface TimerProps {
+  action?: TimerAction;
+}
+
+export const Timer = ({ action = 'stop' }: TimerProps) => {
   return (
-    <div className={styles.timer}>
+    <div className={styles.timer} data-action={action}>
       <div className={styles.content}>
         <span className={styles.icon} aria-hidden='true'>
           <svg
@@ -42,9 +48,9 @@ export const Timer = () => {
         </span>
         <time className={styles.value}>00:00</time>
       </div>
-      <span className={styles.stop} aria-hidden='true'>
-        <span className={styles.glyph} />
-        <span className={styles.text}>Stop</span>
+      <span className={styles.action} aria-hidden='true'>
+        <span className={styles[action]} />
+        <span className={styles.text}>{action}</span>
       </span>
     </div>
   );

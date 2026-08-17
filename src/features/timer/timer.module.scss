@@ -9,7 +9,6 @@
   padding: 8px 10px;
   border-radius: 8px;
   background: $color-white;
-  border: 0.5px solid rgba($color-dark-brown, 0.16);
   overflow: hidden;
   cursor: pointer;
 }
@@ -44,7 +43,7 @@
   color: $color-dark-brown;
 }
 
-.stop {
+.action {
   position: absolute;
   inset: 4px;
   display: flex;
@@ -62,17 +61,32 @@
     transform 0.18s ease;
 }
 
-.stop .glyph {
+.timer[data-action='play'] .action {
+  background: rgba($color-dark-blue, 0.12);
+  color: $color-dark-blue;
+}
+
+.stop {
   width: 12px;
   height: 12px;
   border-radius: 3px;
   background: currentColor;
 }
 
-.stop .text {
+.play {
+  width: 0;
+  height: 0;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  border-left: 11px solid currentColor;
+  margin-left: 2px;
+}
+
+.text {
   font-size: 13px;
   font-weight: 500;
   line-height: 1;
+  text-transform: capitalize;
 }
 
 @media (hover: hover) {
@@ -81,7 +95,7 @@
     transform: scale(0.96);
   }
 
-  .timer:hover .stop {
+  .timer:hover .action {
     opacity: 1;
     transform: scale(1);
   }
