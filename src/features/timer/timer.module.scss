@@ -1,22 +1,27 @@
 @use '../../shared/styles/vars' as *;
 
 .timer {
+  position: relative;
   width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: $color-white;
+  border: 0.5px solid rgba($color-dark-brown, 0.16);
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.content {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 16px;
-  border-radius: 12px;
-  background: $color-white;
-}
-
-.value {
-  min-width: 84px;
-  font-size: 24px;
-  line-height: 1;
-  font-variant-numeric: tabular-nums;
-  color: $color-dark-brown;
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease;
 }
 
 .icon {
@@ -30,4 +35,54 @@
 
 .icon svg {
   display: block;
+}
+
+.value {
+  font-size: 20px;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: $color-dark-brown;
+}
+
+.stop {
+  position: absolute;
+  inset: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 6px;
+  background: rgba($color-red, 0.12);
+  color: $color-red;
+  opacity: 0;
+  transform: scale(0.92);
+  pointer-events: none;
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease;
+}
+
+.stop .glyph {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  background: currentColor;
+}
+
+.stop .text {
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+@media (hover: hover) {
+  .timer:hover .content {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+
+  .timer:hover .stop {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
