@@ -17,10 +17,10 @@
 
 .game {
   border-radius: 8px;
-  padding: 16px;
+  padding: 8px;
   background-color: $color-white;
-  min-width: 554px;
-  min-height: 554px;
+  min-width: 550px;
+  min-height: 550px;
   position: relative;
 
   @include tablet {
@@ -50,19 +50,19 @@
 }
 
 .cell:nth-child(3n) {
-  border-right: 3px solid $color-dark-brown;
+  border-right: 2px solid $color-dark-brown;
 }
 
 .cell:nth-child(1) {
-  border-left: 3px solid $color-dark-brown;
+  border-left: 2px solid $color-dark-brown;
 }
 
 table tr:nth-child(3n) .cell {
-  border-bottom: 3px solid $color-dark-brown;
+  border-bottom: 2px solid $color-dark-brown;
 }
 
 table tr:nth-child(1) .cell {
-  border-top: 3px solid $color-dark-brown;
+  border-top: 2px solid $color-dark-brown;
 }
 
 input {
@@ -80,8 +80,8 @@ input {
   height: 100%;
   min-width: 36px;
   min-height: 36px;
-  max-width: 56px;
-  max-height: 56px;
+  max-width: 58px;
+  max-height: 58px;
 
   &:focus {
     caret-color: transparent;
@@ -120,7 +120,6 @@ input {
 
 .controls {
   background: #ffffff;
-  border: 0.5px solid #d8d2c4;
   border-radius: 12px;
   padding: 8px;
   width: 220px;
