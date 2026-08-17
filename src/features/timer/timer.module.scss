@@ -1,0 +1,33 @@
+@use '../../shared/styles/vars' as *;
+
+.timer {
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px;
+  border-radius: 12px;
+  background: $color-white;
+}
+
+.value {
+  min-width: 84px;
+  font-size: 24px;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: $color-dark-brown;
+}
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 28px;
+  color: $color-dark-brown;
+}
+
+.icon svg {
+  display: block;
+}

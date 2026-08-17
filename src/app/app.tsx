@@ -5,6 +5,7 @@ import { Header } from '@features/header';
 import { SudokuDifficulty } from '@features/game/model/api/types';
 
 import styles from './app.module.scss';
+import { Timer } from '@features/timer';
 
 function App() {
   const [difficulty, setDifficulty] = useState<SudokuDifficulty>('easy');
@@ -28,6 +29,7 @@ function App() {
         }}
         onNewGame={() => mutate(difficulty)}
       />
+      <Timer />
       <Game boardData={data || null} isLoading={isPending} />
     </div>
   );
