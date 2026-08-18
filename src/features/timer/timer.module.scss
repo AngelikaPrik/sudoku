@@ -1,6 +1,8 @@
 @use '../../shared/styles/vars' as *;
 
 .timer {
+  appearance: none;
+  border: 0;
   position: relative;
   width: fit-content;
   display: inline-flex;
@@ -9,8 +11,15 @@
   padding: 8px 10px;
   border-radius: 8px;
   background: $color-white;
+  font: inherit;
+  text-align: left;
   overflow: hidden;
   cursor: pointer;
+}
+
+.timer:focus-visible {
+  outline: 2px solid rgba($color-dark-blue, 0.32);
+  outline-offset: 2px;
 }
 
 .content {
@@ -21,19 +30,6 @@
   transition:
     opacity 0.18s ease,
     transform 0.18s ease;
-}
-
-.icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  font-size: 28px;
-  color: $color-dark-brown;
-}
-
-.icon svg {
-  display: block;
 }
 
 .value {
@@ -51,8 +47,8 @@
   justify-content: center;
   gap: 8px;
   border-radius: 6px;
-  background: rgba($color-red, 0.12);
-  color: $color-red;
+  background: rgba($color-dark-blue, 0.12);
+  color: $color-dark-blue;
   opacity: 0;
   transform: scale(0.92);
   pointer-events: none;
@@ -61,38 +57,45 @@
     transform 0.18s ease;
 }
 
-.timer[data-action='play'] .action {
-  background: rgba($color-dark-blue, 0.12);
-  color: $color-dark-blue;
+.paused {
+  position: relative;
+  width: 12px;
+  height: 14px;
 }
 
-.stop {
-  width: 12px;
-  height: 12px;
-  border-radius: 3px;
+.paused::before,
+.paused::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  border-radius: 999px;
   background: currentColor;
 }
 
-.play {
-  width: 0;
-  height: 0;
-  border-top: 7px solid transparent;
-  border-bottom: 7px solid transparent;
-  border-left: 11px solid currentColor;
-  margin-left: 2px;
+.paused::before {
+  left: 0;
 }
 
-.text {
-  font-size: 13px;
-  font-weight: 500;
-  line-height: 1;
-  text-transform: capitalize;
+.paused::after {
+  right: 0;
+}
+
+.timer[data-status='paused'] .content {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+.timer[data-status='paused'] .action {
+  opacity: 1;
+  transform: scale(1);
 }
 
 @media (hover: hover) {
   .timer:hover .content {
     opacity: 0;
-    transform: scale(0.96);
+    transform: scale(0.95);
   }
 
   .timer:hover .action {
