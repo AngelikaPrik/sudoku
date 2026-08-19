@@ -18,8 +18,8 @@
   border-radius: 8px;
   padding: 8px;
   background-color: $color-white;
-  min-width: 550px;
-  min-height: 550px;
+  min-width: 552px;
+  min-height: 552px;
   position: relative;
 
   @include tablet {
@@ -37,6 +37,48 @@
   background-color: rgba($color: $color-white, $alpha: 0.72);
   backdrop-filter: blur(1px);
   pointer-events: all;
+}
+
+.blur {
+  appearance: none;
+  border: 0;
+  padding: 0;
+  position: absolute;
+  inset: 0;
+  background-color: $color-white;
+  backdrop-filter: blur(10px);
+  opacity: 0;
+  pointer-events: none;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  border-radius: 8px;
+
+  &:disabled {
+    cursor: default;
+  }
+
+  &:focus-visible {
+    outline: 2px solid rgba($color-dark-blue, 0.32);
+    outline-offset: 4px;
+  }
+
+  &.active {
+    opacity: 1;
+    pointer-events: all;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 40px;
+      height: 40px;
+      background: center / contain no-repeat
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'%3E%3Cpath d='M10 7 27 18 10 29Z' fill='%233b6fa0' stroke='%233b6fa0' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E");
+      opacity: 0.88;
+      transform: translate(-38%, -50%);
+    }
+  }
 }
 
 .table {

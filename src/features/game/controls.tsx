@@ -57,7 +57,11 @@ export const Controls = ({
           />
         </svg>
       </button>
-      <button type='button' className={styles.actionBtn} disabled>
+      <button
+        type='button'
+        className={styles.actionBtn}
+        disabled={areActionsDisabled}
+      >
         <svg
           xmlns='http://www.w3.org/2000/svg'
           width='1.25em'

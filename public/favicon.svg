@@ -1,5 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" width="60" height="60">
-  <rect x="0" y="0" width="60" height="60" rx="14" fill="#3A3630"/>
-  <text x="30" y="42" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700" fill="#F4E3C8" text-anchor="middle">9</text>
-  <circle cx="48" cy="14" r="7" fill="#C0524A"/>
+<svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="60" height="60" rx="12" fill="#3B6FA0"/>
+<path d="M11.5 14C12.8807 14 14 12.8807 14 11.5C14 10.1193 12.8807 9 11.5 9C10.1193 9 9 10.1193 9 11.5C9 12.8807 10.1193 14 11.5 14Z" stroke="white" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M29.5 14C30.8807 14 32 12.8807 32 11.5C32 10.1193 30.8807 9 29.5 9C28.1193 9 27 10.1193 27 11.5C27 12.8807 28.1193 14 29.5 14Z" stroke="white" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M47.5 14C48.8807 14 50 12.8807 50 11.5C50 10.1193 48.8807 9 47.5 9C46.1193 9 45 10.1193 45 11.5C45 12.8807 46.1193 14 47.5 14Z" stroke="white" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M11.5 32C12.8807 32 14 30.8807 14 29.5C14 28.1193 12.8807 27 11.5 27C10.1193 27 9 28.1193 9 29.5C9 30.8807 10.1193 32 11.5 32Z" stroke="white" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M29.5 32C30.8807 32 32 30.8807 32 29.5C32 28.1193 30.8807 27 29.5 27C28.1193 27 27 28.1193 27 29.5C27 30.8807 28.1193 32 29.5 32Z" stroke="white" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M47.5 32C48.8807 32 50 30.8807 50 29.5C50 28.1193 48.8807 27 47.5 27C46.1193 27 45 28.1193 45 29.5C45 30.8807 46.1193 32 47.5 32Z" stroke="white" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M11.5 50C12.8807 50 14 48.8807 14 47.5C14 46.1193 12.8807 45 11.5 45C10.1193 45 9 46.1193 9 47.5C9 48.8807 10.1193 50 11.5 50Z" stroke="white" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M29.5 50C30.8807 50 32 48.8807 32 47.5C32 46.1193 30.8807 45 29.5 45C28.1193 45 27 46.1193 27 47.5C27 48.8807 28.1193 50 29.5 50Z" stroke="white" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M47.5 50C48.8807 50 50 48.8807 50 47.5C50 46.1193 48.8807 45 47.5 45C46.1193 45 45 46.1193 45 47.5C45 48.8807 46.1193 50 47.5 50Z" stroke="white" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

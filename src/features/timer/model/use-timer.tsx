@@ -3,23 +3,23 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 export type TimerStatus = 'running' | 'paused';
 
 interface UseTimerOptions {
-  initialStatus?: TimerStatus;
+  status: TimerStatus;
 }
 
 type TimestampMs = number | null;
 
-export const useTimer = ({
-  initialStatus = 'running',
-}: UseTimerOptions = {}) => {
-  const [status, setStatus] = useState<TimerStatus>(initialStatus);
+export const useTimer = ({ status }: UseTimerOptions) => {
   const [elapsedMs, setElapsedMs] = useState(0);
+  const elapsedMsRef = useRef(0);
   const isRunning = status === 'running';
-
-  const startTimeRef = useRef<TimestampMs>(
-    initialStatus === 'running' ? Date.now() : null,
-  );
+  const startTimeRef = useRef<TimestampMs>(isRunning ? Date.now() : null);
   const intervalRef = useRef<TimestampMs>(null);
   const timeoutRef = useRef<TimestampMs>(null);
+
+  const setElapsedValue = useCallback((value: number) => {
+    elapsedMsRef.current = value;
+    setElapsedMs(value);
+  }, []);
 
   const clearTicking = useCallback(() => {
     if (timeoutRef.current !== null) {
@@ -41,22 +41,33 @@ export const useTimer = ({
       return;
     }
 
-    setElapsedMs(Date.now() - startTime);
-  }, [clearTicking]);
+    setElapsedValue(Date.now() - startTime);
+  }, [clearTicking, setElapsedValue]);
 
   useEffect(() => {
     if (!isRunning) {
+      const startTime = startTimeRef.current;
+
+      if (startTime !== null) {
+        setElapsedValue(Date.now() - startTime);
+        startTimeRef.current = null;
+      }
+
       clearTicking();
       return;
     }
+
+    if (startTimeRef.current === null) {
+      startTimeRef.current = Date.now() - elapsedMsRef.current;
+    }
+
+    updateElapsed();
 
     const startTime = startTimeRef.current;
 
     if (startTime === null) {
       return;
     }
-
-    updateElapsed();
 
     const elapsed = Date.now() - startTime;
     const elapsedRemainder = elapsed % 1000;
@@ -72,33 +83,5 @@ export const useTimer = ({
     return clearTicking;
   }, [clearTicking, isRunning, updateElapsed]);
 
-  const onResume = useCallback(() => {
-    if (isRunning) return;
-
-    startTimeRef.current = Date.now() - elapsedMs;
-    setStatus('running');
-  }, [elapsedMs, isRunning]);
-
-  const onPause = useCallback(() => {
-    if (!isRunning) return;
-
-    if (startTimeRef.current !== null) {
-      setElapsedMs(Date.now() - startTimeRef.current);
-    }
-
-    startTimeRef.current = null;
-    clearTicking();
-    setStatus('paused');
-  }, [clearTicking, isRunning]);
-
-  const onToggle = useCallback(() => {
-    if (isRunning) {
-      onPause();
-      return;
-    }
-
-    onResume();
-  }, [isRunning, onPause, onResume]);
-
-  return { elapsedMs, isRunning, status, onToggle };
+  return { elapsedMs };
 };

@@ -10,6 +10,8 @@ interface BoardProps {
   solution: SudokuBoard;
   selected: SelectedCell | null;
   selectedValue: SudokuCell | null;
+  isPaused: boolean;
+  onResume: () => void;
   onSelectCell: (cell: SelectedCell) => void;
   onInputCell: (rowIdx: number, colIdx: number, value: string) => void;
 }
@@ -20,53 +22,62 @@ export const Board = ({
   solution,
   selected,
   selectedValue,
+  isPaused,
+  onResume,
   onSelectCell,
   onInputCell,
 }: BoardProps) => (
-  <table className={styles.table}>
-    <tbody>
-      {board.map((row, rowIdx) => (
-        <tr key={rowIdx}>
-          {row.map((cell, colIdx) => {
-            const cellPosition: SelectedCell = [rowIdx, colIdx];
-            const cellState = getCellState({
-              puzzle,
-              solution,
-              selected,
-              selectedValue,
-              cellPosition,
-              cellValue: cell,
-            });
+  <>
+    <table className={styles.table}>
+      <tbody>
+        {board.map((row, rowIdx) => (
+          <tr key={rowIdx}>
+            {row.map((cell, colIdx) => {
+              const cellPosition: SelectedCell = [rowIdx, colIdx];
+              const cellState = getCellState({
+                puzzle,
+                solution,
+                selected,
+                selectedValue,
+                cellPosition,
+                cellValue: cell,
+              });
 
-            return (
-              <td
-                key={colIdx}
-                className={cn(styles.cell, {
-                  [styles.selected]: cellState.isSelected,
-                  [styles.invalid]: cellState.isInvalid,
-                  [styles['same-row']]: cellState.isSameRow,
-                  [styles['same-col']]: cellState.isSameCol,
-                  [styles['same-box']]: cellState.isSameBox,
-                  [styles['same-value']]: cellState.isSameValue,
-                })}
-              >
-                <input
-                  type='text'
-                  inputMode='numeric'
-                  pattern='[1-9]*'
-                  value={cell === '0' ? '' : cell}
-                  readOnly={cellState.isPrefilled}
-                  onFocus={() => onSelectCell(cellPosition)}
-                  onClick={() => onSelectCell(cellPosition)}
-                  onChange={event =>
-                    onInputCell(rowIdx, colIdx, event.target.value)
-                  }
-                />
-              </td>
-            );
-          })}
-        </tr>
-      ))}
-    </tbody>
-  </table>
+              return (
+                <td
+                  key={colIdx}
+                  className={cn(styles.cell, {
+                    [styles.selected]: cellState.isSelected,
+                    [styles.invalid]: cellState.isInvalid,
+                    [styles['same-row']]: cellState.isSameRow,
+                    [styles['same-col']]: cellState.isSameCol,
+                    [styles['same-box']]: cellState.isSameBox,
+                    [styles['same-value']]: cellState.isSameValue,
+                  })}
+                >
+                  <input
+                    type='text'
+                    inputMode='numeric'
+                    pattern='[1-9]*'
+                    value={cell === '0' ? '' : cell}
+                    readOnly={cellState.isPrefilled}
+                    onFocus={() => onSelectCell(cellPosition)}
+                    onClick={() => onSelectCell(cellPosition)}
+                    onChange={e => onInputCell(rowIdx, colIdx, e.target.value)}
+                  />
+                </td>
+              );
+            })}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+    <button
+      type='button'
+      className={cn(styles.blur, { [styles.active]: isPaused })}
+      aria-label='Resume game'
+      disabled={!isPaused}
+      onClick={onResume}
+    />
+  </>
 );

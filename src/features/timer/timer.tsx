@@ -3,13 +3,13 @@ import { formatElapsed } from './model/timer-utils';
 import { useTimer, type TimerStatus } from './model/use-timer';
 
 interface TimerProps {
-  action?: TimerStatus;
+  status: TimerStatus;
+  onToggle: (nextStatus: TimerStatus) => void;
 }
 
-export const Timer = ({ action = 'running' }: TimerProps) => {
-  const { elapsedMs, isRunning, status, onToggle } = useTimer({
-    initialStatus: action,
-  });
+export const Timer = ({ status, onToggle }: TimerProps) => {
+  const { elapsedMs } = useTimer({ status });
+  const isRunning = status === 'running';
 
   return (
     <button
@@ -17,7 +17,7 @@ export const Timer = ({ action = 'running' }: TimerProps) => {
       className={styles.timer}
       data-status={status}
       aria-pressed={!isRunning}
-      onClick={onToggle}
+      onClick={() => onToggle(isRunning ? 'paused' : 'running')}
     >
       <div className={styles.content}>
         <time className={styles.value}>{formatElapsed(elapsedMs)}</time>

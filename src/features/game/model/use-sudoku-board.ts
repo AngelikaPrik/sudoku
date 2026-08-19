@@ -25,6 +25,7 @@ interface UseSudokuBoardResult {
 export const useSudokuBoard = (
   boardData: PuzzleBoardData | null,
   isLoading: boolean,
+  isPaused: boolean,
 ): UseSudokuBoardResult => {
   const [board, setBoard] = useState<SudokuBoard | null>(null);
   const [selected, setSelected] = useState<SelectedCell | null>(null);
@@ -44,7 +45,7 @@ export const useSudokuBoard = (
   const isSelectedPrefilled =
     selected !== null && puzzle !== null && isPrefilledCell(puzzle, selected);
   const areControlsDisabled =
-    isLoading || selected === null || isSelectedPrefilled;
+    isLoading || isPaused || selected === null || isSelectedPrefilled;
   const filledDigits = getFilledDigits(board, areControlsDisabled);
 
   const updateCell = ([rowIdx, colIdx]: SelectedCell, value: SudokuCell) => {
@@ -62,6 +63,10 @@ export const useSudokuBoard = (
   };
 
   const handleCellInput = (rowIdx: number, colIdx: number, value: string) => {
+    if (isPaused) {
+      return;
+    }
+
     const nextValue = normalizeCellInput(value);
 
     if (
@@ -75,7 +80,7 @@ export const useSudokuBoard = (
   };
 
   const changeSelectedCellValue = (value: SudokuCell) => {
-    if (!selected || isSelectedPrefilled) {
+    if (isPaused || !selected || isSelectedPrefilled) {
       return;
     }
 
