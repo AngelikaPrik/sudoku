@@ -17,11 +17,6 @@
   cursor: pointer;
 }
 
-.timer:focus-visible {
-  outline: 2px solid rgba($color-dark-blue, 0.32);
-  outline-offset: 2px;
-}
-
 .content {
   display: flex;
   align-items: center;
@@ -55,31 +50,11 @@
   transition:
     opacity 0.18s ease,
     transform 0.18s ease;
-}
 
-.paused {
-  position: relative;
-  width: 12px;
-  height: 14px;
-}
-
-.paused::before,
-.paused::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 4px;
-  border-radius: 999px;
-  background: currentColor;
-}
-
-.paused::before {
-  left: 0;
-}
-
-.paused::after {
-  right: 0;
+  & svg {
+    width: 12px;
+    height: 14px;
+  }
 }
 
 .timer[data-status='paused'] .content {

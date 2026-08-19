@@ -1,6 +1,8 @@
 import styles from './timer.module.scss';
 import { formatElapsed } from './model/timer-utils';
 import { useTimer, type TimerStatus } from './model/use-timer';
+import PauseIcon from '../../assets/pause.svg?react';
+import PlayIcon from '../../assets/play.svg?react';
 
 interface TimerProps {
   status: TimerStatus;
@@ -23,7 +25,11 @@ export const Timer = ({ status, onToggle }: TimerProps) => {
         <time className={styles.value}>{formatElapsed(elapsedMs)}</time>
       </div>
       <span className={styles.action} aria-hidden='true'>
-        <span className={styles.paused} />
+        {isRunning ? (
+          <PauseIcon className={styles.actionIcon} />
+        ) : (
+          <PlayIcon className={styles.actionIcon} />
+        )}
       </span>
     </button>
   );
