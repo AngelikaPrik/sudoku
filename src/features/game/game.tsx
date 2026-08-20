@@ -1,39 +1,62 @@
-import type { PuzzleBoardData } from './model/api/types';
+import { useMemo } from 'react';
+import { Timer } from '@features/timer';
+import {
+  selectAreControlsDisabled,
+  selectBoard,
+  selectErrorMessage,
+  selectIsLoading,
+  selectIsPaused,
+  selectIsSolved,
+  selectPuzzle,
+  selectSelectedCell,
+  selectSelectedValue,
+  selectSolution,
+} from '@/store/selectors';
+import { useAppStore } from '@/store/use-app-store';
 import styles from './game.module.scss';
 import { Loader } from '@shared/ui/loader';
 import { Controls } from './controls';
 import { Board } from './board';
-import { useSudokuBoard } from './model/use-sudoku-board';
+import { getFilledDigits } from './model/board-utils';
+import { useShallow } from 'zustand/react/shallow';
 
-interface GameProps {
-  boardData: PuzzleBoardData | null;
-  isLoading: boolean;
-  isPaused: boolean;
-  onResume: () => void;
-  timer: React.ReactNode;
-}
-
-export const Game = ({
-  boardData,
-  isLoading,
-  isPaused,
-  onResume,
-  timer,
-}: GameProps) => {
+export const Game = () => {
   const {
     board,
     puzzle,
+    solution,
     selected,
     selectedValue,
-    filledDigits,
+    isLoading,
+    isPaused,
+    isSolved,
     areControlsDisabled,
-    selectCell,
-    handleCellInput,
-    changeSelectedCellValue,
-    eraseSelectedCell,
-  } = useSudokuBoard(boardData, isLoading, isPaused);
-  const solution = boardData?.solution ?? null;
+    errorMessage,
+  } = useAppStore(
+    useShallow(state => ({
+      board: selectBoard(state),
+      puzzle: selectPuzzle(state),
+      solution: selectSolution(state),
+      selected: selectSelectedCell(state),
+      selectedValue: selectSelectedValue(state),
+      isLoading: selectIsLoading(state),
+      isPaused: selectIsPaused(state),
+      isSolved: selectIsSolved(state),
+      areControlsDisabled: selectAreControlsDisabled(state),
+      errorMessage: selectErrorMessage(state),
+    })),
+  );
+  const selectCell = useAppStore(state => state.selectCell);
+  const inputCell = useAppStore(state => state.inputCell);
+  const setSelectedCellValue = useAppStore(state => state.setSelectedCellValue);
+  const eraseSelectedCell = useAppStore(state => state.eraseSelectedCell);
+  const resumeGame = useAppStore(state => state.resumeGame);
   const hasBoard = board !== null && puzzle !== null && solution !== null;
+  const isError = !hasBoard && !isLoading && errorMessage !== null;
+  const filledDigits = useMemo(
+    () => getFilledDigits(board, areControlsDisabled),
+    [areControlsDisabled, board],
+  );
 
   return (
     <div className={styles.container}>
@@ -46,23 +69,29 @@ export const Game = ({
             selected={selected}
             selectedValue={selectedValue}
             isPaused={isPaused}
-            onResume={onResume}
+            isSolved={isSolved}
+            onResume={resumeGame}
             onSelectCell={selectCell}
-            onInputCell={handleCellInput}
+            onInputCell={inputCell}
           />
         )}
-        {(!hasBoard || isLoading) && (
+        {(!hasBoard || isLoading) && !isError && (
           <div className={styles.loader} aria-live='polite' aria-busy='true'>
             <Loader />
           </div>
         )}
+        {isError && (
+          <div className={styles.loader} role='alert'>
+            <p className={styles.statusMessage}>{errorMessage}</p>
+          </div>
+        )}
       </div>
       <div className={styles.aside}>
-        {timer}
+        <Timer />
         <Controls
           areActionsDisabled={areControlsDisabled}
           filledDigits={filledDigits}
-          onSelectValue={changeSelectedCellValue}
+          onSelectValue={setSelectedCellValue}
           onErase={eraseSelectedCell}
         />
       </div>

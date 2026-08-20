@@ -39,6 +39,12 @@
   pointer-events: all;
 }
 
+.statusMessage {
+  padding: 24px;
+  text-align: center;
+  color: $color-dark-brown;
+}
+
 .blur {
   appearance: none;
   border: 0;
@@ -93,6 +99,16 @@
 
 .table {
   border-collapse: collapse;
+
+  @for $row from 1 through 9 {
+    tr:nth-child(#{$row}) {
+      @for $col from 1 through 9 {
+        .cell:nth-child(#{$col}) {
+          --solve-delay: #{(($row - 1) * 9 + ($col - 1)) * 40ms};
+        }
+      }
+    }
+  }
 }
 
 .cell {
@@ -167,6 +183,25 @@ input {
 
 .selected {
   background-color: $color-blue;
+}
+
+.solved {
+  animation: solved-cell-fill 0.32s ease-out forwards;
+  animation-delay: var(--solve-delay, 0ms);
+
+  input {
+    pointer-events: none;
+  }
+}
+
+@keyframes solved-cell-fill {
+  from {
+    background-color: inherit;
+  }
+
+  to {
+    background-color: $color-blue;
+  }
 }
 
 .aside {

@@ -1,87 +1,65 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-export type TimerStatus = 'running' | 'paused';
+export type TimerStatus = 'running' | 'paused' | 'stopped';
 
 interface UseTimerOptions {
   status: TimerStatus;
+  elapsedBeforePauseMs: number;
+  startedAtMs: number | null;
 }
 
-type TimestampMs = number | null;
+const getElapsedMs = ({
+  status,
+  elapsedBeforePauseMs,
+  startedAtMs,
+  nowMs,
+}: UseTimerOptions & { nowMs: number }) =>
+  status === 'running' && startedAtMs !== null
+    ? elapsedBeforePauseMs + (nowMs - startedAtMs)
+    : elapsedBeforePauseMs;
 
-export const useTimer = ({ status }: UseTimerOptions) => {
-  const [elapsedMs, setElapsedMs] = useState(0);
-  const elapsedMsRef = useRef(0);
-  const isRunning = status === 'running';
-  const startTimeRef = useRef<TimestampMs>(isRunning ? Date.now() : null);
-  const intervalRef = useRef<TimestampMs>(null);
-  const timeoutRef = useRef<TimestampMs>(null);
-
-  const setElapsedValue = useCallback((value: number) => {
-    elapsedMsRef.current = value;
-    setElapsedMs(value);
-  }, []);
-
-  const clearTicking = useCallback(() => {
-    if (timeoutRef.current !== null) {
-      window.clearTimeout(timeoutRef.current);
-      timeoutRef.current = null;
-    }
-
-    if (intervalRef.current !== null) {
-      window.clearInterval(intervalRef.current);
-      intervalRef.current = null;
-    }
-  }, []);
-
-  const updateElapsed = useCallback(() => {
-    const startTime = startTimeRef.current;
-
-    if (startTime === null) {
-      clearTicking();
-      return;
-    }
-
-    setElapsedValue(Date.now() - startTime);
-  }, [clearTicking, setElapsedValue]);
+export const useTimer = ({
+  status,
+  elapsedBeforePauseMs,
+  startedAtMs,
+}: UseTimerOptions) => {
+  const [nowMs, setNowMs] = useState(() => Date.now());
 
   useEffect(() => {
-    if (!isRunning) {
-      const startTime = startTimeRef.current;
-
-      if (startTime !== null) {
-        setElapsedValue(Date.now() - startTime);
-        startTimeRef.current = null;
-      }
-
-      clearTicking();
+    if (status !== 'running' || startedAtMs === null) {
       return;
     }
 
-    if (startTimeRef.current === null) {
-      startTimeRef.current = Date.now() - elapsedMsRef.current;
-    }
+    const syncNow = () => {
+      setNowMs(Date.now());
+    };
 
-    updateElapsed();
-
-    const startTime = startTimeRef.current;
-
-    if (startTime === null) {
-      return;
-    }
-
-    const elapsed = Date.now() - startTime;
+    syncNow();
+    const elapsed = Date.now() - startedAtMs;
     const elapsedRemainder = elapsed % 1000;
     const msUntilNextSecond =
       elapsedRemainder === 0 ? 1000 : 1000 - elapsedRemainder;
+    let intervalId: number | null = null;
 
-    timeoutRef.current = window.setTimeout(() => {
-      updateElapsed();
-      timeoutRef.current = null;
-      intervalRef.current = window.setInterval(updateElapsed, 1000);
+    const timeoutId = setTimeout(() => {
+      syncNow();
+      intervalId = setInterval(syncNow, 1000);
     }, msUntilNextSecond);
 
-    return clearTicking;
-  }, [clearTicking, isRunning, updateElapsed]);
+    return () => {
+      clearTimeout(timeoutId);
 
+      if (intervalId !== null) {
+        clearInterval(intervalId);
+      }
+    };
+  }, [startedAtMs, status]);
+
+  const elapsedMs = getElapsedMs({
+    status,
+    elapsedBeforePauseMs,
+    startedAtMs,
+    nowMs,
+  });
   return { elapsedMs };
 };

@@ -15,6 +15,10 @@
   text-align: left;
   overflow: hidden;
   cursor: pointer;
+
+  &:disabled {
+    cursor: default;
+  }
 }
 
 .content {
@@ -68,12 +72,12 @@
 }
 
 @media (hover: hover) {
-  .timer:hover .content {
+  .timer:not(:disabled):hover .content {
     opacity: 0;
     transform: scale(0.95);
   }
 
-  .timer:hover .action {
+  .timer:not(:disabled):hover .action {
     opacity: 1;
     transform: scale(1);
   }

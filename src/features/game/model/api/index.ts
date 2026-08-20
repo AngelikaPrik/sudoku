@@ -1,1 +1,1 @@
-export { usePuzzleMutation } from './use-puzzle-mutation';
+export { fetchPuzzle } from './fetch-puzzle';

@@ -1,7 +1,6 @@
-import { useMutation } from '@tanstack/react-query';
 import type { PuzzleBoardData, SudokuDifficulty } from './types';
 
-const fetchPuzzle = async (
+export const fetchPuzzle = async (
   difficulty: SudokuDifficulty,
 ): Promise<PuzzleBoardData> => {
   const response = await fetch('/api', {
@@ -22,8 +21,3 @@ const fetchPuzzle = async (
 
   return response.json();
 };
-
-export const usePuzzleMutation = () =>
-  useMutation<PuzzleBoardData, Error, SudokuDifficulty>({
-    mutationFn: fetchPuzzle,
-  });

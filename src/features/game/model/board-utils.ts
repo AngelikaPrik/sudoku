@@ -98,6 +98,19 @@ export const canUseCellValue = (
   return usedCount < MAX_DIGIT_USAGE;
 };
 
+export const isBoardSolved = (
+  board: SudokuBoard | null,
+  solution: SudokuBoard | null,
+): boolean => {
+  if (!board || !solution) {
+    return false;
+  }
+
+  return board.every((row, rowIdx) =>
+    row.every((cell, colIdx) => solution[rowIdx]?.[colIdx] === cell),
+  );
+};
+
 const isSameBox = (
   [row, col]: SelectedCell,
   [selectedRow, selectedCol]: SelectedCell,

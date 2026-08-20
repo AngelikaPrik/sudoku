@@ -1,23 +1,17 @@
 import cn from 'classnames';
 import logo from '../../../public/favicon.svg';
+import { selectDifficulty, selectIsLoading } from '@/store/selectors';
+import { useAppStore } from '@/store/use-app-store';
 import type { SudokuDifficulty } from 'src/features/game/model/api/types';
 import styles from './header.module.scss';
 
 const difficultyButtons: SudokuDifficulty[] = ['easy', 'medium', 'hard'];
 
-interface HeaderProps {
-  difficulty: SudokuDifficulty;
-  isLoading: boolean;
-  setDifficulty: (difficulty: SudokuDifficulty) => void;
-  onNewGame: () => void;
-}
+export const Header = () => {
+  const difficulty = useAppStore(selectDifficulty);
+  const isLoading = useAppStore(selectIsLoading);
+  const startNewGame = useAppStore(state => state.startNewGame);
 
-export const Header = ({
-  difficulty,
-  isLoading,
-  setDifficulty,
-  onNewGame,
-}: HeaderProps) => {
   return (
     <header className={styles.header}>
       <div className={styles.logo}>
@@ -36,7 +30,13 @@ export const Header = ({
               })}
               disabled={isLoading}
               aria-pressed={button === difficulty}
-              onClick={() => setDifficulty(button)}
+              onClick={() => {
+                if (button === difficulty) {
+                  return;
+                }
+
+                startNewGame(button);
+              }}
             >
               {button}
             </button>
@@ -47,7 +47,7 @@ export const Header = ({
           type='button'
           className={styles.newGameBtn}
           disabled={isLoading}
-          onClick={onNewGame}
+          onClick={() => startNewGame()}
         >
           <svg
             xmlns='http://www.w3.org/2000/svg'

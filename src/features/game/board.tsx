@@ -12,6 +12,7 @@ interface BoardProps {
   selected: SelectedCell | null;
   selectedValue: SudokuCell | null;
   isPaused: boolean;
+  isSolved: boolean;
   onResume: () => void;
   onSelectCell: (cell: SelectedCell) => void;
   onInputCell: (rowIdx: number, colIdx: number, value: string) => void;
@@ -24,6 +25,7 @@ export const Board = ({
   selected,
   selectedValue,
   isPaused,
+  isSolved,
   onResume,
   onSelectCell,
   onInputCell,
@@ -54,6 +56,7 @@ export const Board = ({
                     [styles['same-col']]: cellState.isSameCol,
                     [styles['same-box']]: cellState.isSameBox,
                     [styles['same-value']]: cellState.isSameValue,
+                    [styles.solved]: isSolved,
                   })}
                 >
                   <input
@@ -61,7 +64,7 @@ export const Board = ({
                     inputMode='numeric'
                     pattern='[1-9]*'
                     value={cell === '0' ? '' : cell}
-                    readOnly={cellState.isPrefilled}
+                    readOnly={cellState.isPrefilled || isSolved}
                     onFocus={() => onSelectCell(cellPosition)}
                     onClick={() => onSelectCell(cellPosition)}
                     onChange={e => onInputCell(rowIdx, colIdx, e.target.value)}
