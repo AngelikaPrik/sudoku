@@ -1,8 +1,8 @@
 import styles from './timer.module.scss';
 import { formatElapsed } from './model/timer-utils';
 import { useTimer, type TimerStatus } from './model/use-timer';
-import PauseIcon from '../../assets/pause.svg?react';
-import PlayIcon from '../../assets/play.svg?react';
+import PauseIcon from '@assets/pause.svg?react';
+import PlayIcon from '@assets/play.svg?react';
 
 interface TimerProps {
   status: TimerStatus;

@@ -23,6 +23,7 @@ export default defineConfig(({ mode }) => {
         '@app': fileURLToPath(new URL('./src/app', import.meta.url)),
         '@features': fileURLToPath(new URL('./src/features', import.meta.url)),
         '@shared': fileURLToPath(new URL('./src/shared', import.meta.url)),
+        '@assets': fileURLToPath(new URL('./src/assets', import.meta.url)),
       },
     },
     plugins: [svgr(), react()],

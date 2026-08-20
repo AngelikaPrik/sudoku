@@ -242,12 +242,16 @@ input {
   }
 
   &:last-child {
-    border: 0.5px solid #3b6fa0;
-    color: #3b6fa0;
+    border: 0.5px solid $color-dark-blue;
+    color: $color-dark-blue;
+    & svg path {
+      fill: $color-dark-blue;
+    }
   }
 
   &:last-child.active {
-    background: #3b6fa0;
+    background: $color-dark-blue;
     color: #ffffff;
+    fill: #ffffff;
   }
 }

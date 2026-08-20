@@ -2,7 +2,7 @@ import cn from 'classnames';
 import type { SudokuBoard, SudokuCell } from './model/api/types';
 import { getCellState } from './model/board-utils';
 import type { SelectedCell } from './model/board-utils';
-import PlayIcon from '../../assets/play.svg?react';
+import PlayIcon from '@assets/play.svg?react';
 import styles from './game.module.scss';
 
 interface BoardProps {
